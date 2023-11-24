@@ -168,7 +168,8 @@ Received SIGSEGV, invalid memory access
 @BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment5/503 (main) $ ./SignalHandler 2
 
 ```
-Restricted by Github Codespaces, I can't resize this terminal. so I'll pass a message from another terminal next to trigger the parameter as 2.
+
+Restricted by Github Codespaces, I can't resize this terminal. so I'll pass a message from another terminal next to trigger the condition which parameter as 2.
 
 ```bash
 @BH3GEI ➜ /workspaces $ ps aux | grep SignalHandler
