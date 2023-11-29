@@ -304,7 +304,7 @@ char *password = "xxxxxx";
 250 2.0.0 Ok: queued as 4Sc77x2Yvwz1gwb7
 221 2.0.0 Bye
 ```
-After running the program, we open the mail box.\
+After running the program, we open the mail box.
 
 It was successfully sent.
 
