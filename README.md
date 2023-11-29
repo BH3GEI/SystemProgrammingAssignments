@@ -12,6 +12,12 @@ The main development environment was an Ubuntu 22.04.1 system on Github Codespac
 
 ### 302
 
+
+#### Improvements:
+
+- Removed unnecessary test files to clean up the workspace.
+- Implemented error checking mechanisms to improve program robustness.
+  
 #### Basic Usage:
 
 ```bash
@@ -40,6 +46,10 @@ Time taken for file copy (char): 65.742096 seconds
 We can see that there is a considerable difference in performance between the two ways of copying files.
 
 ### 303
+
+#### Improvements:
+
+- Replaced the `putchar()` function with `write()` system call for better efficiency and error handling.
 
 #### Basic Usage:
 
@@ -137,6 +147,10 @@ output_file: Result out file.
 ```
 
 ### 407
+#### Improvements:
+
+- Removed `sleep()` calls and explored better synchronization techniques such as Mutexes or Condition Variables.
+
 #### Basic Usage:
 ```bash
 ./AlternatingOutput [num of chars]
@@ -183,6 +197,10 @@ Then we can see that the condition is triggered.
 Received SIGWINCH, window size changed
 ```
 ### 505
+#### Improvements:
+
+- Modified termio logic and added functionality to print the current time before calling `mygetchar()`.
+- Ensured compatibility with EOF input.
 #### Basic Usage:
 ```bash
 ./GetcharModified [timeout]
@@ -212,6 +230,12 @@ Return value: -2, current time: Fri Nov 24 03:13:19 2023
 Please input a character within 3 seconds:
 
 Return value: -1, current time: Fri Nov 24 03:13:25 2023
+
+# EOF
+@BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment5/505 (main) $ ./GetcharModified 3
+Please input a character within 3 seconds:
+^D
+Return value: -1, current time: Fri Nov 29 01:14:20 2023
 ```
 
 ## Assignment6
@@ -264,6 +288,13 @@ quit
 Connection closed by foreign host.
 
 ```
+
+#### Improvements:
+
+- Added status code checks to `smtp_command()` for better error handling.
+- Replaced `strcat()` with `snprintf()` to prevent buffer overflows.
+- Fixed SMTP DATA formatting by replacing "." with ".." and ensuring an empty line between headers and body.
+
 
 #### Usage:
 
