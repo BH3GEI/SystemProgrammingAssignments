@@ -119,8 +119,7 @@ void read_line(int sockfd, char *buffer) {
 void smtp_command(int sockfd, char *command, char *response) {
     char buffer[256];
     bzero(buffer, 256);
-    strcat(buffer, command);
-    strcat(buffer, "\r\n");
+    snprintf(buffer, sizeof(buffer), "%s\r\n", command);
     ssize_t write_result = write(sockfd, buffer, strlen(buffer));
     if (write_result == -1) {
         error("Write error");
@@ -137,8 +136,11 @@ void smtp_data(int sockfd, char **data, int lines, char *response){
     char buffer[256];
     for(int i = 0; i < lines; i++){
         bzero(buffer, 256);
-        strcat(buffer, data[i]);
-        strcat(buffer, "\r\n");
+        if(strcmp(data[i], ".") == 0) {
+            snprintf(buffer, sizeof(buffer), "..\r\n");
+        } else {
+            snprintf(buffer, sizeof(buffer), "%s\r\n", data[i]);
+        }
         ssize_t write_result = write(sockfd, buffer, strlen(buffer));
         if (write_result == -1) {
             error("Write error");
@@ -220,7 +222,7 @@ int main(int argc, char *argv[])
     while (fgets(line, sizeof(line), stdin) != NULL && i < MAX_LINES) {
         // Remove the newline character at the end of the line
         line[strcspn(line, "\n")] = 0;
-
+    
         // Add the read line to the email message array
         mail_msg[i] = strdup(line);
         if (mail_msg[i] == NULL) {
@@ -259,7 +261,7 @@ int main(int argc, char *argv[])
     
     // Start the SMTP conversation
     smtp_command(sockfd, "EHLO mails.jlu.edu.cn", "250");
-    smtp_command(sockfd, "AUTH LOGIN", "334");
+    smtp_command(sockfd, "AUTH LOGIN", "333");
     smtp_command(sockfd, encoded_username, "334");
     smtp_command(sockfd, encoded_password, "235");
 

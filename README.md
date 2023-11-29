@@ -63,7 +63,7 @@ First we try to generate and read a relatively long file.
 @BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment3/303 (main) $ gcc -o HeadViewer HeadViewer.c
 ```
 ```bash
-@BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment3/303 (main) $ ./head testfile.txt 5
+@BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment3/303 (main) $ ./HeadViewer testfile.txt 5
 AY6+9rpd9gq3RF/IB5HAAq0UpVAc1Sx5v8ioLHRtxHbduBH63CexdvWa/lpyeRFmmd5Un7/ugRSw
 OF8IQ2yZLTQNTAJLmn95ECh3YFLOTaeDSACv0c051uK/8N3lpSBsnCeiBkxZglxfyMGZqh/ymnhu
 2s+Ag4cIoQl3wtVpWSutfsK7tnBRdu/vXZ3kibgxetKnCd9jud10L3cSVr94LodkStKv8jUN7YKF
@@ -72,7 +72,7 @@ usblKYWNV57zBP1bdgFP4sHV1hzcnFKoPvC+5O0So9lmdFcVGYOmQZ2ImUs/oxGiJnaopDpapstP
 ```
 
 ```bash
-@BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment3/303 (main) $ ./tail testfile.txt 5
+@BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment3/303 (main) $ ./TailViewer testfile.txt 5
 bRVQgDtY6SpJb7KZXUGmGmbMm78Ip20TNDCM/PC4Lz8TixF6SfAzjBAzD8QcIU6V1b8GiOY8Gflf
 5LGXSKnbflh19Z8KYjzzdDIqT6kf4yeccv0poMSJbWmO3awKK1FPDb4Ww1tQCFRQFJuCGcwm4Zya
 UJg2l+gCVXeUUfzYdpRE0oeEhzjSEx8feRuDMXWvh4aSHAVV9yOTVYKpNejvlsH2tibBpBTetFI2

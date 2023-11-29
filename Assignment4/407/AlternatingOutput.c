@@ -39,7 +39,6 @@ int main(int argc, char *argv[]) {
             write(pipes_ch2par[1], &counter, sizeof(counter));
             putchar('0' + counter % 10);
             fflush(stdout);
-            sleep(1); //let parent process have chance to read
             if (read(pipes_par2ch[0], &counter, sizeof(counter)) <= 0) {
                 break;
             }
@@ -54,7 +53,6 @@ int main(int argc, char *argv[]) {
             fflush(stdout);
             counter++;
             write(pipes_par2ch[1], &counter, sizeof(counter));
-            sleep(1); //let child process have chance to read
         }
     }
 

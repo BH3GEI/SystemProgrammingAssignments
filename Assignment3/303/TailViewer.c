@@ -42,14 +42,22 @@ int main(int argc, char *argv[]) {
         }
         if (line_count == num_lines) {
             for (int j = i + 1; j < sb.st_size; j++) {
-                putchar(file_in_memory[j]);
+                if (write(STDOUT_FILENO, &file_in_memory[j], 1) == -1) {
+                    perror("write");
+                    munmap(file_in_memory, sb.st_size);
+                    return 1;
+                }
             }
             break;
         }
     }
 
     if (line_count < num_lines) {
-        printf("%s", file_in_memory);
+        if (write(STDOUT_FILENO, file_in_memory, sb.st_size) == -1) {
+            perror("write");
+            munmap(file_in_memory, sb.st_size);
+            return 1;
+        }
     }
 
     munmap(file_in_memory, sb.st_size);

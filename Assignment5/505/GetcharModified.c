@@ -4,10 +4,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <time.h>
-#include <sys/termios.h>
-#include <fcntl.h>
 #include <sys/select.h>
-#include <bits/sigaction.h>
+#include <ctype.h>
 
 int timeout_occurred = 0;
 int interrupt_occurred = 0;
@@ -29,14 +27,6 @@ int mygetchar(int timeout) {
     sigaction(SIGALRM, &sa_alarm, &sa_old_alarm);
     sigaction(SIGINT, &sa_interrupt, &sa_old_interrupt);
 
-    struct termios old_tio, new_tio;
-    tcgetattr(STDIN_FILENO, &old_tio);
-    new_tio = old_tio;
-    new_tio.c_lflag &= ~ICANON;
-    new_tio.c_cc[VMIN] = 0;
-    new_tio.c_cc[VTIME] = 0;
-    tcsetattr(STDIN_FILENO, TCSANOW, &new_tio);
-
     struct timeval tv;
     tv.tv_sec = timeout;
     tv.tv_usec = 0;
@@ -46,20 +36,12 @@ int mygetchar(int timeout) {
     int ret = select(1, &read_fds, NULL, NULL, &tv);
 
     int ch = -1;
+    char buffer[1];
     if (ret > 0) {
-        ch = getchar();
-        if (ch == EOF) {
-            if (feof(stdin)) {
-                tcsetattr(STDIN_FILENO, TCSANOW, &old_tio);
-                sigaction(SIGALRM, &sa_old_alarm, NULL);
-                sigaction(SIGINT, &sa_old_interrupt, NULL);
-                return -1; 
-            } else if (ferror(stdin)) {
-                clearerr(stdin);
-                ch = -3;
-            } else {
-                ch = -1;
-        }
+        if(read(STDIN_FILENO, buffer, 1) > 0) {
+            ch = buffer[0];
+        } else {
+            ch = -1;
         }
     } else if (ret == 0 || timeout_occurred) {
         ch = -2;
@@ -67,7 +49,6 @@ int mygetchar(int timeout) {
         ch = -3;
     }
 
-    tcsetattr(STDIN_FILENO, TCSANOW, &old_tio);
     sigaction(SIGALRM, &sa_old_alarm, NULL);
     sigaction(SIGINT, &sa_old_interrupt, NULL);
 
@@ -79,10 +60,22 @@ int main(int argc, char *argv[]) {
     if (argc > 1) {
         timeout = atoi(argv[1]);
     }
-    printf("Please input a character within %d seconds:\n", timeout);
-    int ch = mygetchar(timeout);
     time_t current_time = time(NULL);
     char *c_time_string = ctime(&current_time);
-    printf("\nReturn value: %d, current time: %s\n", ch, c_time_string);
+    printf("Current time: %s\n", c_time_string);
+    printf("Please input a character within %d seconds:\n", timeout);
+    int ch = mygetchar(timeout);
+    char output[32]; 
+    if (ch >= 32 && ch <= 126) { // printable ASCII characters
+        output[0] = ch;
+        output[1] = '\0';
+    } else { // control characters or special values
+        snprintf(output, sizeof(output), "%d", ch);
+    }
+    write(STDOUT_FILENO, output, strlen(output));
+    write(STDOUT_FILENO, "\n", 1);
+    current_time = time(NULL);
+    c_time_string = ctime(&current_time);
+    printf("Return value: %d, current time: %s\n", ch, c_time_string);
     return 0;
 }

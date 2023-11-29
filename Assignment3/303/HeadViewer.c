@@ -36,7 +36,14 @@ int main(int argc, char *argv[]) {
     int num_lines = atoi(argv[2]);
 
     for (int i = 0, line = 1; i < sb.st_size && line <= num_lines; i++) {
-        putchar(file_in_memory[i]);
+        ssize_t write_result = write(STDOUT_FILENO, &file_in_memory[i], 1);
+        
+        if(write_result == -1){
+            perror("write");
+            munmap(file_in_memory, sb.st_size);
+            return 1;
+        }
+
         if (file_in_memory[i] == '\n') {
             line++;
         }
