@@ -63,7 +63,7 @@ First we try to generate and read a relatively long file.
 @BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment3/303 (main) $ gcc -o HeadViewer HeadViewer.c
 ```
 ```bash
-@BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment3/303 (main) $ ./HeadViewer testfile.txt 5
+@BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment3/303 (main) $ ./head testfile.txt 5
 AY6+9rpd9gq3RF/IB5HAAq0UpVAc1Sx5v8ioLHRtxHbduBH63CexdvWa/lpyeRFmmd5Un7/ugRSw
 OF8IQ2yZLTQNTAJLmn95ECh3YFLOTaeDSACv0c051uK/8N3lpSBsnCeiBkxZglxfyMGZqh/ymnhu
 2s+Ag4cIoQl3wtVpWSutfsK7tnBRdu/vXZ3kibgxetKnCd9jud10L3cSVr94LodkStKv8jUN7YKF
@@ -72,7 +72,7 @@ usblKYWNV57zBP1bdgFP4sHV1hzcnFKoPvC+5O0So9lmdFcVGYOmQZ2ImUs/oxGiJnaopDpapstP
 ```
 
 ```bash
-@BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment3/303 (main) $ ./TailViewer testfile.txt 5
+@BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment3/303 (main) $ ./tail testfile.txt 5
 bRVQgDtY6SpJb7KZXUGmGmbMm78Ip20TNDCM/PC4Lz8TixF6SfAzjBAzD8QcIU6V1b8GiOY8Gflf
 5LGXSKnbflh19Z8KYjzzdDIqT6kf4yeccv0poMSJbWmO3awKK1FPDb4Ww1tQCFRQFJuCGcwm4Zya
 UJg2l+gCVXeUUfzYdpRE0oeEhzjSEx8feRuDMXWvh4aSHAVV9yOTVYKpNejvlsH2tibBpBTetFI2
@@ -223,6 +223,48 @@ Jilin University's mail server requires submission of email accounts and passwor
 So I implemented a simple base64 encoding and added statements to set the account password in the variable definition part of the code.
 In addition, I added some logic related to exception handling.
 
+Before programming, we can try logging in and sending a mail using telnet.
+
+```bash
+
+$ telnet mails.jlu.edu.cn smtp
+Trying 202.198.16.89...
+Connected to mails.jlu.edu.cn.
+Escape character is '^]'.
+220 mails.jlu.edu.cn ESMTP Server
+EHLO mails.jlu.edu.cn
+250-mails.jlu.edu.cn
+250-PIPELINING
+250-SIZE 1524000000
+250-ETRN
+250-STARTTLS
+250-AUTH LOGIN PLAIN
+250-AUTH=LOGIN PLAIN
+250-ENHANCEDSTATUSCODES
+250 8BITMIME
+AUTH LOGIN
+334 VXNlcm5hbWU6
+dGhpcyBpcyB1c2VybmFtZQo=
+334 UGFzc3dvcmQ6
+dGhpcyBpcyBwYXNzd29yZA==
+235 2.7.0 Authentication successful
+MAIL FROM: liyao1119@mails.jlu.edu.cn
+250 2.1.0 Ok
+RCPT TO: liyao.bh3gei@gmail.com
+250 2.1.5 Ok
+DATA
+354 End data with <CR><LF>.<CR><LF>
+From: liyao1119@mails.jlu.edu.cn
+To: liyao.bh3gei@gmail.com
+Subject: Across the firewall we can reach every corner of the world.
+.
+250 2.0.0 Ok: queued as 4SHRdM0JbTz1gwbG
+quit
+221 2.0.0 Bye
+Connection closed by foreign host.
+
+```
+
 #### Usage:
 
 The execution would probably be like this
@@ -230,13 +272,17 @@ The execution would probably be like this
 ```bash
 ./smtpput [host address] [from@coins.tsukuba.ac.jp] [to@coins.tsukuba.ac.jp] < mail-data
 ```
+
 In addition, the user's account password needs to be configured
+
 ```c
 // Global variables for the email and password
 char *username = "xxx@xxx.xxx";
 char *password = "xxxxxx";
 ```
+
 #### Output:
+
 ```bash
 @BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment6/612 $ ./smtpput mails.jlu.edu.cn liyao1119@mails.jlu.edu.cn liyao.bh3gei@gmail.com < mail-data
 220 mails.jlu.edu.cn ESMTP Server

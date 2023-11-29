@@ -128,6 +128,12 @@ void smtp_command(int sockfd, char *command, char *response) {
         bzero(buffer, 256);
         read_line(sockfd, buffer);
         printf("%s\n", buffer);
+        if (strstr(buffer, response) != buffer) {
+            if (buffer[0] == '4' || buffer[0] == '5') {
+                fprintf(stderr, "SMTP error: %s\n", buffer);
+                exit(1);
+            }
+        }
     } while (strstr(buffer, response) != buffer);
 }
 
@@ -218,17 +224,30 @@ int main(int argc, char *argv[])
 
     // Now start reading the email content
     char line[256];
-    int i = 2;
-    while (fgets(line, sizeof(line), stdin) != NULL && i < MAX_LINES) {
+    int i = 0;  // Start from 0 to add headers and body in order
+    int subject_line_added = 0; // flag to check if the subject line has been added
+    
+    while (fgets(line, sizeof(line), stdin) != NULL && i < MAX_LINES - 1) { // reserve 1 space for NULL
         // Remove the newline character at the end of the line
         line[strcspn(line, "\n")] = 0;
-    
-        // Add the read line to the email message array
-        mail_msg[i] = strdup(line);
-        if (mail_msg[i] == NULL) {
-            error("Memory allocation error");
+
+        // Check for the subject and add it properly
+        if (!subject_line_added && strncmp(line, "Subject:", 8) == 0) {
+            mail_msg[i] = strdup(line);
+            if (mail_msg[i] == NULL) {
+                error("Memory allocation error");
+            }
+            i++;
+            mail_msg[i++] = strdup(""); // Add the empty line after the subject line
+            subject_line_added = 1;
+        } else {
+            // Add the read line to the email message array
+            mail_msg[i] = strdup(line);
+            if (mail_msg[i] == NULL) {
+                error("Memory allocation error");
+            }
+            i++;
         }
-        i++;
     }
     int lines = i;
 
@@ -253,15 +272,22 @@ int main(int argc, char *argv[])
         (char *)&serv_addr.sin_addr.s_addr, 
         server->h_length);
     serv_addr.sin_port = htons(portno);
-    if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) 
+
+    if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
+        for (int j = 0; j < i; j++) {
+            free(mail_msg[j]);
+        }
+        free(encoded_username);
+        free(encoded_password);
         error("ERROR connecting");
+    }
 
     encoded_username = base64_encode(username, strlen(username), &output_length);
     encoded_password = base64_encode(password, strlen(password), &output_length);
     
     // Start the SMTP conversation
     smtp_command(sockfd, "EHLO mails.jlu.edu.cn", "250");
-    smtp_command(sockfd, "AUTH LOGIN", "333");
+    smtp_command(sockfd, "AUTH LOGIN", "334");
     smtp_command(sockfd, encoded_username, "334");
     smtp_command(sockfd, encoded_password, "235");
 
@@ -282,6 +308,11 @@ int main(int argc, char *argv[])
 
     free(encoded_username);
     free(encoded_password);
-    
+
+    // Free allocated memory for mail_msg
+    for (i = 0; i < lines; i++) {
+        free(mail_msg[i]);
+    }
+
     return 0;
 }
