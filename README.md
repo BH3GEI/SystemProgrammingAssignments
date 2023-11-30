@@ -208,34 +208,46 @@ Received SIGWINCH, window size changed
 #### Output:
 ```bash
 # Ctrl-C
-@BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment5/505 (main) $ ./GetcharModified 3
+@BH3GEI ➜ .../2/SystemProgrammingAssignments/Assignment5/505 (main) $ ./GetcharModified 3
+Current time: Thu Nov 30 01:16:27 2023
+
 Please input a character within 3 seconds:
 ^C
-Return value: -3, current time: Fri Nov 24 03:13:12 2023
+Return value: -3, current time: Thu Nov 30 01:16:29 2023
+
 
 # Normal
-@BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment5/505 (main) $ ./GetcharModified 3
+@BH3GEI ➜ .../2/SystemProgrammingAssignments/Assignment5/505 (main) $ ./GetcharModified 3
+Current time: Thu Nov 30 01:16:48 2023
+
 Please input a character within 3 seconds:
 a
-Return value: 97, current time: Fri Nov 24 03:13:00 2023
+
+Return value: 97, current time: Thu Nov 30 01:16:50 2023
 
 # Timeout
-@BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment5/505 (main) $ ./GetcharModified 3
+@BH3GEI ➜ .../2/SystemProgrammingAssignments/Assignment5/505 (main) $ ./GetcharModified 3
+Current time: Thu Nov 30 01:16:18 2023
+
 Please input a character within 3 seconds:
 
-Return value: -2, current time: Fri Nov 24 03:13:19 2023
+Return value: -2, current time: Thu Nov 30 01:16:21 2023
 
 # EOF
-@BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment5/505 (main) $ echo -n | ./GetcharModified 3
+@BH3GEI ➜ .../2/SystemProgrammingAssignments/Assignment5/505 (main) $ ./GetcharModified 3
+Current time: Thu Nov 30 01:16:30 2023
+
 Please input a character within 3 seconds:
 
-Return value: -1, current time: Fri Nov 24 03:13:25 2023
+Return value: -1, current time: Thu Nov 30 01:16:33 2023
 
 # EOF
-@BH3GEI ➜ /workspaces/SystemProgrammingAssignments/Assignment5/505 (main) $ ./GetcharModified 3
+@BH3GEI ➜ .../2/SystemProgrammingAssignments/Assignment5/505 (main) $ echo -n | ./GetcharModified 3
+Current time: Thu Nov 30 01:16:59 2023
+
 Please input a character within 3 seconds:
-^D
-Return value: -1, current time: Fri Nov 29 01:14:20 2023
+
+Return value: -1, current time: Thu Nov 30 01:16:59 2023
 ```
 
 ## Assignment6
