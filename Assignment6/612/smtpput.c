@@ -16,7 +16,7 @@
 
 // Global variables for the email and password
 char *username = "liyao1119@mails.jlu.edu.cn";
-char *password = "daiyina2020";
+char *password = "0";
 
 // Global variables to store the base64 encoded email and password
 char *encoded_username = NULL;
